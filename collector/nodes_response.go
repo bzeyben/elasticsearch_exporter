@@ -117,7 +117,7 @@ type NodeStatsIndicesResponse struct {
 	Indexing     NodeStatsIndicesIndexingResponse
 	Merges       NodeStatsIndicesMergesResponse
 	Get          NodeStatsIndicesGetResponse
-	Search       NodeStatsIndicesSearchResponse
+	Search       NodeStatsIndicesSearchResponse `json:"search"`
 	FieldData    NodeStatsIndicesCacheResponse `json:"fielddata"`
 	FilterCache  NodeStatsIndicesCacheResponse `json:"filter_cache"`
 	QueryCache   NodeStatsIndicesCacheResponse `json:"query_cache"`
@@ -183,13 +183,20 @@ type NodeStatsIndicesGetResponse struct {
 }
 
 type NodeStatsIndicesSearchResponse struct {
-	OpenContext  int64 `json:"open_contexts"`
-	QueryTotal   int64 `json:"query_total"`
-	QueryTime    int64 `json:"query_time_in_millis"`
-	QueryCurrent int64 `json:"query_current"`
-	FetchTotal   int64 `json:"fetch_total"`
-	FetchTime    int64 `json:"fetch_time_in_millis"`
-	FetchCurrent int64 `json:"fetch_current"`
+	OpenContext    int64 `json:"open_contexts"`
+	QueryTotal     int64 `json:"query_total"`
+	QueryTime      int64 `json:"query_time_in_millis"`
+	QueryCurrent   int64 `json:"query_current"`
+	FetchTotal     int64 `json:"fetch_total"`
+	FetchTime      int64 `json:"fetch_time_in_millis"`
+	FetchCurrent   int64 `json:"fetch_current"`
+	ScrollTotal    int64 `json:"scroll_total"`
+	ScrollTime     int64 `json:"scroll_time_in_millis"`
+	scrollCurrent  int64 `json:"scroll_current"`
+	SuggestTotal   int64 `json:"suggest_total"`
+	SuggestTime    int64 `json:"suggest_time_in_millis"`
+	SuggestCurrent int64 `json:"suggest_current"`
+
 }
 
 type NodeStatsIndicesFlushResponse struct {
@@ -220,15 +227,17 @@ type NodeStatsOSResponse struct {
 }
 
 type NodeStatsOSMemResponse struct {
-	Free       int64 `json:"free_in_bytes"`
-	Used       int64 `json:"used_in_bytes"`
-	ActualFree int64 `json:"actual_free_in_bytes"`
-	ActualUsed int64 `json:"actual_used_in_bytes"`
+	Total         int64 `json:"total_in_bytes"`
+	Free          int64 `json:"free_in_bytes"`
+	Used          int64 `json:"used_in_bytes"`
+	FreePercent   int64 `json:"free_percent"`
+	ActualPercent int64 `json:"used_percent"`
 }
 
 type NodeStatsOSSwapResponse struct {
-	Used int64 `json:"used_in_bytes"`
-	Free int64 `json:"free_in_bytes"`
+	Total int64 `json:"total_in_bytes"`
+	Used  int64 `json:"used_in_bytes"`
+	Free  int64 `json:"free_in_bytes"`
 }
 
 type NodeStatsOSCPUResponse struct {
@@ -281,14 +290,15 @@ type NodeStatsFSResponse struct {
 type NodeStatsFSDataResponse struct {
 	Path          string `json:"path"`
 	Mount         string `json:"mount"`
-	Device        string `json:"dev"`
+	Type	      string `json:"type"`
+	// Device        string `json:"dev"`
 	Total         int64  `json:"total_in_bytes"`
 	Free          int64  `json:"free_in_bytes"`
 	Available     int64  `json:"available_in_bytes"`
-	DiskReads     int64  `json:"disk_reads"`
-	DiskWrites    int64  `json:"disk_writes"`
-	DiskReadSize  int64  `json:"disk_read_size_in_bytes"`
-	DiskWriteSize int64  `json:"disk_write_size_in_bytes"`
+	// DiskReads     int64  `json:"disk_reads"`
+	// DiskWrites    int64  `json:"disk_writes"`
+	// DiskReadSize  int64  `json:"disk_read_size_in_bytes"`
+	// DiskWriteSize int64  `json:"disk_write_size_in_bytes"`
 }
 
 // ClusterHealthResponse is a representation of a Elasticsearch Cluster Health
