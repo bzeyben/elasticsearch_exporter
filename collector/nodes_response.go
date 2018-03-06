@@ -163,13 +163,17 @@ type NodeStatsIndicesIndexingResponse struct {
 }
 
 type NodeStatsIndicesMergesResponse struct {
-	Current     int64 `json:"current"`
-	CurrentDocs int64 `json:"current_docs"`
-	CurrentSize int64 `json:"current_size_in_bytes"`
-	Total       int64 `json:"total"`
-	TotalDocs   int64 `json:"total_docs"`
-	TotalSize   int64 `json:"total_size_in_bytes"`
-	TotalTime   int64 `json:"total_time_in_millis"`
+	Current		      int64 `json:"current"`
+	CurrentDocs	      int64 `json:"current_docs"`
+	CurrentSize	      int64 `json:"current_size_in_bytes"`
+	Total		      int64 `json:"total"`
+	TotalTime	      int64 `json:"total_time_in_millis"`
+	TotalDocs   	      int64 `json:"total_docs"`
+	TotalSize             int64 `json:"total_size_in_bytes"`
+	TotalStoppedTime      int64 `json:"total_stopped_time_in_millis"`
+	TotalThrottledTime    int64 `json:"total_throttled_time_in_millis"`
+	TotalAutoThrottleSize int64 `json:"total_auto_throttle_in_bytes"`
+
 }
 
 type NodeStatsIndicesGetResponse struct {
