@@ -112,19 +112,20 @@ type NodeStatsTCPResponse struct {
 
 // NodeStatsIndicesResponse is a representation of a indices stats (size, document count, indexing and deletion times, search times, field cache size, merges and flushes)
 type NodeStatsIndicesResponse struct {
-	Docs         NodeStatsIndicesDocsResponse
-	Store        NodeStatsIndicesStoreResponse
-	Indexing     NodeStatsIndicesIndexingResponse
-	Merges       NodeStatsIndicesMergesResponse
-	Get          NodeStatsIndicesGetResponse
+	Docs         NodeStatsIndicesDocsResponse `json:"docs"`
+	Store        NodeStatsIndicesStoreResponse `json:"store"`
+	Indexing     NodeStatsIndicesIndexingResponse `json:"indexing"`
+	Get          NodeStatsIndicesGetResponse `json:"get"`
 	Search       NodeStatsIndicesSearchResponse `json:"search"`
-	FieldData    NodeStatsIndicesCacheResponse `json:"fielddata"`
-	FilterCache  NodeStatsIndicesCacheResponse `json:"filter_cache"`
+	Merges       NodeStatsIndicesMergesResponse `json:"merges"`
+	Refresh      NodeStatsIndicesRefreshResponse `json:"refresh"`
+	Flush        NodeStatsIndicesFlushResponse `json:"flush"`
+	Warmer       NodeStatsIndicesWarmerResponse `json:"warmer"`
 	QueryCache   NodeStatsIndicesCacheResponse `json:"query_cache"`
-	RequestCache NodeStatsIndicesCacheResponse `json:"request_cache"`
-	Flush        NodeStatsIndicesFlushResponse
+	//FieldData    NodeStatsIndicesFieldResponse `json:"fielddata"`
+	//FilterCache  NodeStatsIndicesCacheResponse `json:"filter_cache"`
+	//RequestCache NodeStatsIndicesCacheResponse `json:"request_cache"`
 	Segments     NodeStatsIndicesSegmentsResponse
-	Refresh      NodeStatsIndicesRefreshResponse
 	Translog     NodeStatsIndicesTranslogResponse
 }
 
@@ -133,47 +134,21 @@ type NodeStatsIndicesDocsResponse struct {
 	Deleted int64 `json:"deleted"`
 }
 
-type NodeStatsIndicesRefreshResponse struct {
-	Total     int64 `json:"total"`
-	TotalTime int64 `json:"total_time_in_millis"`
-}
-
-type NodeStatsIndicesTranslogResponse struct {
-	Operations int64 `json:"operations"`
-	Size       int64 `json:"size_in_bytes"`
-}
-
-type NodeStatsIndicesSegmentsResponse struct {
-	Count  int64 `json:"count"`
-	Memory int64 `json:"memory_in_bytes"`
-}
-
 type NodeStatsIndicesStoreResponse struct {
 	Size         int64 `json:"size_in_bytes"`
-	ThrottleTime int64 `json:"throttle_time_in_millis"`
+	//ThrottleTime int64 `json:"throttle_time_in_millis"`
 }
 
 type NodeStatsIndicesIndexingResponse struct {
-	IndexTotal    int64 `json:"index_total"`
-	IndexTime     int64 `json:"index_time_in_millis"`
-	IndexCurrent  int64 `json:"index_current"`
-	DeleteTotal   int64 `json:"delete_total"`
-	DeleteTime    int64 `json:"delete_time_in_millis"`
-	DeleteCurrent int64 `json:"delete_current"`
-}
-
-type NodeStatsIndicesMergesResponse struct {
-	Current		      int64 `json:"current"`
-	CurrentDocs	      int64 `json:"current_docs"`
-	CurrentSize	      int64 `json:"current_size_in_bytes"`
-	Total		      int64 `json:"total"`
-	TotalTime	      int64 `json:"total_time_in_millis"`
-	TotalDocs   	      int64 `json:"total_docs"`
-	TotalSize             int64 `json:"total_size_in_bytes"`
-	TotalStoppedTime      int64 `json:"total_stopped_time_in_millis"`
-	TotalThrottledTime    int64 `json:"total_throttled_time_in_millis"`
-	TotalAutoThrottleSize int64 `json:"total_auto_throttle_in_bytes"`
-
+	IndexTotal    int64   `json:"index_total"`
+	IndexTime     int64   `json:"index_time_in_millis"`
+	IndexCurrent  int64   `json:"index_current"`
+	DeleteTotal   int64   `json:"delete_total"`
+	DeleteTime    int64   `json:"delete_time_in_millis"`
+	DeleteCurrent int64   `json:"delete_current"`
+	NoopUpdateTotal int64 `json:"noop_update_total"`
+	IsThrottles bool      `json:"is_throttled"`
+	ThrottleTime int64    `json:"throttle_time_in_millis"`
 }
 
 type NodeStatsIndicesGetResponse struct {
@@ -200,22 +175,56 @@ type NodeStatsIndicesSearchResponse struct {
 	SuggestTotal   int64 `json:"suggest_total"`
 	SuggestTime    int64 `json:"suggest_time_in_millis"`
 	SuggestCurrent int64 `json:"suggest_current"`
+}
 
+type NodeStatsIndicesMergesResponse struct {
+	Current		      int64 `json:"current"`
+	CurrentDocs	      int64 `json:"current_docs"`
+	CurrentSize	      int64 `json:"current_size_in_bytes"`
+	Total		      int64 `json:"total"`
+	TotalTime	      int64 `json:"total_time_in_millis"`
+	TotalDocs   	      int64 `json:"total_docs"`
+	TotalSize             int64 `json:"total_size_in_bytes"`
+	TotalStoppedTime      int64 `json:"total_stopped_time_in_millis"`
+	TotalThrottledTime    int64 `json:"total_throttled_time_in_millis"`
+	TotalAutoThrottleSize int64 `json:"total_auto_throttle_in_bytes"`
+}
+
+type NodeStatsIndicesRefreshResponse struct {
+	Total     int64 `json:"total"`
+	TotalTime int64 `json:"total_time_in_millis"`
+	Listeners int64 `json:"listeners"`
 }
 
 type NodeStatsIndicesFlushResponse struct {
-	Total int64 `json:"total"`
-	Time  int64 `json:"total_time_in_millis"`
+	Total      int64 `json:"total"`
+	TotalTime  int64 `json:"total_time_in_millis"`
+}
+
+type NodeStatsIndicesWarmerResponse struct {
+	Current   int64 `json:"current"`
+	Total     int64 `json:"total"`
+	TotalTime int64 `json:"total_time_in_millis"`
 }
 
 type NodeStatsIndicesCacheResponse struct {
-	Evictions  int64 `json:"evictions"`
 	MemorySize int64 `json:"memory_size_in_bytes"`
-	CacheCount int64 `json:"cache_count"`
-	CacheSize  int64 `json:"cache_size"`
+	TotalCount int64 `json:"total_count"`
 	HitCount   int64 `json:"hit_count"`
 	MissCount  int64 `json:"miss_count"`
-	TotalCount int64 `json:"total_count"`
+	CacheSize  int64 `json:"cache_size"`
+	CacheCount int64 `json:"cache_count"`
+	Evictions  int64 `json:"evictions"`
+}
+
+type NodeStatsIndicesTranslogResponse struct {
+	Operations int64 `json:"operations"`
+	Size       int64 `json:"size_in_bytes"`
+}
+
+type NodeStatsIndicesSegmentsResponse struct {
+	Count  int64 `json:"count"`
+	Memory int64 `json:"memory_in_bytes"`
 }
 
 // NodeStatsOSResponse is a representation of a  operating system stats, load average, mem, swap
