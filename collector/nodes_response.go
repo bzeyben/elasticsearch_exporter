@@ -2,7 +2,7 @@ package collector
 
 import "encoding/json"
 
-// nodeStatsResponse is a representation of a Elasticsearch Node Stats
+// NodeStatsResponse is a representation of a Elasticsearch Node Stats
 type nodeStatsResponse struct {
 	ClusterName string `json:"cluster_name"`
 	Nodes       map[string]NodeStatsNodeResponse
@@ -121,12 +121,13 @@ type NodeStatsIndicesResponse struct {
 	Refresh      NodeStatsIndicesRefreshResponse `json:"refresh"`
 	Flush        NodeStatsIndicesFlushResponse `json:"flush"`
 	Warmer       NodeStatsIndicesWarmerResponse `json:"warmer"`
-	QueryCache   NodeStatsIndicesCacheResponse `json:"query_cache"`
-	//FieldData    NodeStatsIndicesFieldResponse `json:"fielddata"`
-	//FilterCache  NodeStatsIndicesCacheResponse `json:"filter_cache"`
-	//RequestCache NodeStatsIndicesCacheResponse `json:"request_cache"`
-	Segments     NodeStatsIndicesSegmentsResponse
-	Translog     NodeStatsIndicesTranslogResponse
+	QueryCache   NodeStatsIndicesQueryResponse `json:"query_cache"`
+	FieldData    NodeStatsIndicesFieldResponse `json:"fielddata"`
+	Completion   NodeStatsIndicesCompletionResponse `json:"completion"`
+	Segments     NodeStatsIndicesSegmentsResponse `json:"segments"`
+	Translog     NodeStatsIndicesTranslogResponse `json:"translog"`
+	RequestCache NodeStatsIndicesRequestResponse `json:"request_cache"`
+	
 }
 
 type NodeStatsIndicesDocsResponse struct {
@@ -207,7 +208,7 @@ type NodeStatsIndicesWarmerResponse struct {
 	TotalTime int64 `json:"total_time_in_millis"`
 }
 
-type NodeStatsIndicesCacheResponse struct {
+type NodeStatsIndicesQueryResponse struct {
 	MemorySize int64 `json:"memory_size_in_bytes"`
 	TotalCount int64 `json:"total_count"`
 	HitCount   int64 `json:"hit_count"`
@@ -217,14 +218,42 @@ type NodeStatsIndicesCacheResponse struct {
 	Evictions  int64 `json:"evictions"`
 }
 
-type NodeStatsIndicesTranslogResponse struct {
-	Operations int64 `json:"operations"`
+type NodeStatsIndicesFieldResponse struct {
+	MemorySize int64 `json:"memory_size_in_bytes"`
+	Evictions  int64 `json:"evictions"`
+}
+
+type NodeStatsIndicesCompletionResponse struct {
 	Size       int64 `json:"size_in_bytes"`
 }
 
 type NodeStatsIndicesSegmentsResponse struct {
-	Count  int64 `json:"count"`
-	Memory int64 `json:"memory_in_bytes"`
+	Count  			 int64 `json:"count"`
+	Memory 			 int64 `json:"memory_in_bytes"`
+	TermsMemory 		 int64 `json:"terms_memory_in_bytes"`
+	StoredFieldMemory 	 int64 `json:"stored_fields_memory_in_bytes"`
+	TermVectorsMemory 	 int64 `json:"term_vectors_memory_in_bytes"`
+	NormsMemory 		 int64 `json:"norms_memory_in_bytes"`
+	PointsMemory 		 int64 `json""points_memory_in_bytes"`
+	DocValuesMemory 	 int64 `json:"doc_values_memory_in_bytes"`
+	IndexWriterMemory 	 int64 `json:"index_writer_memory_in_bytes"`
+	VersionMapMemory 	 int64 `json:"version_map_memory_in_bytes"`
+	FixedBitSetMemory 	 int64 `json:"fixed_bit_set_memory_in_bytes"`
+	MaxUnsafeAutoIdTimestamp int64 `json:"max_unsafe_auto_id_timestamp"`
+}
+
+type NodeStatsIndicesTranslogResponse struct {
+	Operations 	     int64 `json:"operations"`
+	Size       	     int64 `json:"size_in_bytes"`
+	UncomittedOperations int64 `json:"uncommitted_operations"`
+	UncomittedSize       int64 `json:"uncommitted_size_in_bytes"`
+}
+
+type NodeStatsIndicesRequestResponse struct {
+	MemorySize int64 `json:"memory_size_in_bytes"`
+	Evictions  int64 `json:"evictions"`
+	HitCount   int64 `json:"hit_count"`
+	MissCount  int64 `json:"miss_count"`
 }
 
 // NodeStatsOSResponse is a representation of a  operating system stats, load average, mem, swap
@@ -249,8 +278,8 @@ type NodeStatsOSMemResponse struct {
 
 type NodeStatsOSSwapResponse struct {
 	Total int64 `json:"total_in_bytes"`
-	Used  int64 `json:"used_in_bytes"`
 	Free  int64 `json:"free_in_bytes"`
+	Used  int64 `json:"used_in_bytes"`
 }
 
 type NodeStatsOSCPUResponse struct {
@@ -276,17 +305,17 @@ type NodeStatsProcessResponse struct {
 	Memory    NodeStatsProcessMemResponse `json:"mem"`
 }
 
-type NodeStatsProcessMemResponse struct {
-	Resident     int64 `json:"resident_in_bytes"`
-	Share        int64 `json:"share_in_bytes"`
-	TotalVirtual int64 `json:"total_virtual_in_bytes"`
-}
-
 type NodeStatsProcessCPUResponse struct {
 	Percent int64 `json:"percent"`
 	Sys     int64 `json:"sys_in_millis"`
 	User    int64 `json:"user_in_millis"`
 	Total   int64 `json:"total_in_millis"`
+}
+
+type NodeStatsProcessMemResponse struct {
+	Resident     int64 `json:"resident_in_bytes"`
+	Share        int64 `json:"share_in_bytes"`
+	TotalVirtual int64 `json:"total_virtual_in_bytes"`
 }
 
 type NodeStatsHTTPResponse struct {
