@@ -44,7 +44,7 @@ type IndexStatsIndexDocsResponse struct {
 
 type IndexStatsIndexStoreResponse struct {
 	SizeInBytes          int64 `json:"size_in_bytes"`
-	ThrottleTimeInMillis int64 `json:"throttle_time_in_millis"`
+	// ThrottleTimeInMillis int64 `json:"throttle_time_in_millis"`
 }
 
 type IndexStatsIndexIndexingResponse struct {
@@ -153,6 +153,8 @@ type IndexStatsIndexSegmentsResponse struct {
 type IndexStatsIndexTranslogResponse struct {
 	Operations  int64 `json:"operations"`
 	SizeInBytes int64 `json:"size_in_bytes"`
+	UncommittedOperations  int64 `json:"uncommitted_operations"`
+	UncommittedSizeInBytes int64 `json:"uncommitted_size_in_bytes"`
 }
 
 type IndexStatsIndexRequestCacheResponse struct {
